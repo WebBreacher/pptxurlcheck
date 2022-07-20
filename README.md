@@ -46,11 +46,37 @@ C:\>pptxurlcheck SEC561.pptx
 ...
 ```
 
+## Ignored URLs
+
+Pptxurlcheck ignores several URL patterns that don't make sense for validation
+purposes:
+
++ RFC1918 private IP addresses
++ Loopback IP addresses
++ localhost
++ Domains ending in .onion and .i2p
+
+Optionally, a file ending with a `.txt` extension may be added at any position
+in the command line. This file should include a list of URLs to ignore from the
+URL check report, one per line. The URL in the ignore file must be an exact
+match for the URL in the PowerPoint file to be ignored:
+
+```
+$ cat ignoreurls.txt
+https://update.googleapis.com/service/update2
+https://www.godaddy.com/whois/results.aspx?id=J7TA5oEZ8R8JbAAdtaCg
+http://www.[target_company].com
+https://www.redacted.gov/wp-content/uploads/2019/06/MEP_programsandprojects.pdf
+$ pptxurlcheck.py SEC504_*pptx ignoreurls.txt
+URL validation report created at pptxurlreport.csv
+```
+
+
 ## Platforms
 
 Tested on Windows 10, macOS 11.2, and Debian-based Linux. Windows binary
-included in the `bin/` directory, built with `pyinstaller --onefile --hidden-import urllib3
-pptxurlcheck.py` using Python 3.9.4.
+included in the `bin/` directory, built with `pyinstaller --onefile --hidden-import urllib3 --hidden-import requests
+pptxurlcheck.py` using Python 3.9.5.
 
 ## Questions, Comments, Concerns?
 
